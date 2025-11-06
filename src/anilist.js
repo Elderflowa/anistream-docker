@@ -184,6 +184,7 @@ async function getPlanningAnime(anilistToken) {
     }),
   });
   const viewerData = await viewerResponse.json();
+  console.log("Viewer data:", viewerData);
   const userId = viewerData.data.Viewer.id;
 
   // Now fetch the planning anime with the user ID

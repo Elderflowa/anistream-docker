@@ -109,8 +109,11 @@ async function getAnimeDetails(animeId) {
 async function getUserWatchStatus(anilistToken, anilistId) {
   const query = `
     query ($id: Int!) {
-      MediaList(mediaId: $id, type: ANIME) {
-        status
+      Media(id: $id, type: ANIME) {
+        id
+        mediaListEntry {
+          status
+        }
       }
     }`;
   const variables = { id: parseInt(anilistId) };
@@ -127,13 +130,15 @@ async function getUserWatchStatus(anilistToken, anilistId) {
     }),
   });
   const data = await response.json();
-  return data.data.MediaList ? data.data.MediaList.status : null;
+  return data.data.Media.mediaListEntry
+    ? data.data.Media.mediaListEntry.status
+    : null;
 }
 
-async function updateUserWatchList(anilistToken, anilistId, status, progress) {
+async function updateUserWatchList(anilistToken, anilistId, progress, status) {
   const mutation = `  
     mutation ($mediaId: Int!, $status: MediaListStatus!, $progress: Int!) {
-      SaveMediaList(mediaId: $mediaId, status: $status, progress: $progress) {
+      SaveMediaListEntry(mediaId: $mediaId, status: $status, progress: $progress) {
         id
         status
         progress

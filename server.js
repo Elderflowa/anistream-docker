@@ -157,6 +157,7 @@ app.get("/:anilistToken/stream/:type/:id.json", async (req, res) => {
       },
     }));
 
+    // Update user's watch status on Anilist
     if (anilistToken && streams.length > 0) {
       const userWatchStatus = await getUserWatchStatus(anilistToken, animeId);
       if (userWatchStatus) {

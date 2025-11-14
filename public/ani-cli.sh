@@ -477,7 +477,7 @@ case "$search" in
         # Treat query as _id directly
         id="$query"
         ep_list=$(episodes_list "$id")
-        [ -z "$ep_list" ] && die "No episodes found for _id: $id"
+        [ -z "$ep_list" ] && exit 1
         
         allanime_title="$id"
         [ -z "$ep_no" ] && ep_no=$(printf "%s" "$ep_list" | nth "Select episode: " "$multi_selection_flag")

@@ -1,5 +1,3 @@
-const { getEpisodesList, getAnimeByAnilistId } = require("./anicli");
-
 const BASE_URL = "https://graphql.anilist.co";
 
 async function fetchAnilist(query, variables) {

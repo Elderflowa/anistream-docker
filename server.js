@@ -10,7 +10,6 @@ const {
 const {
   getAnimeStreams,
   updateUserWatchStatusOnAnilist,
-  getSubtitlesUrl,
 } = require("./src/addon");
 const { getAnimeByAnilistId, getSubtitles } = require("./src/anicli");
 
@@ -82,7 +81,9 @@ app.use((req, res, next) => {
   res.on("finish", () => {
     const ms = Date.now() - start;
     console.log(
-      `${req.method} ${req.originalUrl} - ${res.statusCode} (${ms}ms)`
+      `${req.method} ${req.originalUrl.slice(0, 40)} - ${
+        res.statusCode
+      } (${ms}ms)`
     );
   });
 
@@ -136,8 +137,8 @@ app.get("/catalog/:type/:id.json", async (req, res) => {
       return res.json({ metas: [] });
     }
   } catch (err) {
-    console.error("Catalog error:", err);
-    res.status(500).json({ metas: [] });
+    console.log("Catalog error:", err);
+    res.json({ metas: [] });
   }
 });
 
@@ -153,8 +154,8 @@ app.get("/:anilistToken/catalog/:type/:id.json", async (req, res) => {
       return res.json({ metas: watchingAnime });
     }
   } catch (err) {
-    console.error("Catalog error:", err);
-    res.status(500).json({ metas: [] });
+    console.log("Catalog error:", err);
+    res.json({ metas: [] });
   }
 });
 
@@ -169,8 +170,8 @@ app.get("/:anilistToken/catalog/:type/:id/:extra.json", async (req, res) => {
     const anime = await searchAnime(searchQuery);
     res.json({ metas: anime });
   } catch (err) {
-    console.error("Catalog error:", err);
-    res.status(500).json({ metas: [] });
+    console.log("Catalog error:", err);
+    res.json({ metas: [] });
   }
 });
 
@@ -185,8 +186,8 @@ app.get("/catalog/:type/:id/:extra.json", async (req, res) => {
     const anime = await searchAnime(searchQuery);
     res.json({ metas: anime });
   } catch (err) {
-    console.error("Catalog error:", err);
-    res.status(500).json({ metas: [] });
+    console.log("Catalog error:", err);
+    res.json({ metas: [] });
   }
 });
 
@@ -197,8 +198,8 @@ app.get("/:anilistToken/meta/:type/:id.json", async (req, res) => {
     const meta = await getAnimeDetails(id, anilistToken);
     res.json({ meta });
   } catch (err) {
-    console.error("Meta error:", err);
-    res.status(500).json({ meta: {} });
+    console.log("Meta error:", err);
+    res.json({ meta: {} });
   }
 });
 
@@ -208,8 +209,8 @@ app.get("/meta/:type/:id.json", async (req, res) => {
     const meta = await getAnimeDetails(id);
     res.json({ meta });
   } catch (err) {
-    console.error("Meta error:", err);
-    res.status(500).json({ meta: {} });
+    console.log("Meta error:", err);
+    res.json({ meta: {} });
   }
 });
 
@@ -241,8 +242,8 @@ app.get("/:anilistToken/stream/:type/:id.json", async (req, res) => {
 
     res.json({ streams });
   } catch (err) {
-    console.error("Stream error:", err);
-    res.status(500).json({ streams: [] });
+    console.log("Stream error:", err);
+    res.json({ streams: [] });
   }
 });
 
@@ -265,8 +266,8 @@ app.get("/stream/:type/:id.json", async (req, res) => {
 
     res.json({ streams });
   } catch (err) {
-    console.error("Stream error:", err);
-    res.status(500).json({ streams: [] });
+    console.log("Stream error:", err);
+    res.json({ streams: [] });
   }
 });
 
@@ -297,7 +298,7 @@ app.get(
         ],
       });
     } catch (err) {
-      console.error("Subtitles error:", err);
+      console.log("Subtitles error:", err);
       return res.json({ subtitles: [] });
     }
   }
@@ -315,7 +316,7 @@ app.get("/subtitles/:type/:id/filename=:filename.json", async (req, res) => {
     );
     const subtitles = await getSubtitles(allAnimeId.id, id.split("_")[3]);
 
-    if (!subtitles) return res.status(500).json({ subtitles: [] });
+    if (!subtitles) return res.json({ subtitles: [] });
 
     return res.json({
       subtitles: [
@@ -327,8 +328,8 @@ app.get("/subtitles/:type/:id/filename=:filename.json", async (req, res) => {
       ],
     });
   } catch (err) {
-    console.error("Subtitles error", err);
-    res.status(500).json;
+    console.log("Subtitles error", err);
+    res.json({ subtitles: [] });
   }
 });
 
@@ -404,8 +405,8 @@ app.get("/poster/:id.png", async (req, res) => {
     res.setHeader("Content-Type", "image/png");
     res.send(buffer);
   } catch (err) {
-    console.error("[POSTER] Error:", err.message);
-    res.status(500).json({ error: "Failed to generate poster" });
+    console.log("[POSTER] Error:", err.message);
+    res.json({ error: "Failed to generate poster" });
   }
 });
 

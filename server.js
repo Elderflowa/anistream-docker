@@ -18,7 +18,7 @@ const sharp = require("sharp");
 app.use(cors());
 app.use(express.static("public"));
 
-// ------------------- MANIFEST -------------------
+// Manifest.json
 const manifest = {
   id: "community.AnilistStream",
   version: "0.0.2",
@@ -75,6 +75,7 @@ const manifest = {
   ],
 };
 
+// Middleware to log requests
 app.use((req, res, next) => {
   const start = Date.now();
 
@@ -90,6 +91,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// Static Files or Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -109,10 +111,7 @@ app.get(
   }
 );
 
-// ------------------- PATH-BASED ROUTES -------------------
-
-// Manifest
-
+// Manifest.json
 app.get("/manifest.json", (req, res) => {
   res.setHeader("Cache-Control", "max-age=604800");
   res.setHeader("Content-Type", "application/json");
@@ -126,10 +125,9 @@ app.get("/:anilistToken/manifest.json", (req, res) => {
 });
 
 // Catalog
-
 app.get("/catalog/:type/:id.json", async (req, res) => {
   try {
-    const { type, id } = req.params;
+    const { id } = req.params;
 
     if (id === "anilist_planning") {
       return res.json({ metas: [] });
@@ -144,7 +142,9 @@ app.get("/catalog/:type/:id.json", async (req, res) => {
 
 app.get("/:anilistToken/catalog/:type/:id.json", async (req, res) => {
   try {
-    const { anilistToken, type, id } = req.params;
+    const { anilistToken, id } = req.params;
+
+    if (!anilistToken) return res.json({ metas: [] });
 
     if (id === "anilist_planning" && anilistToken) {
       const planningAnime = await getPlanningAnime(anilistToken);
@@ -161,7 +161,7 @@ app.get("/:anilistToken/catalog/:type/:id.json", async (req, res) => {
 
 app.get("/:anilistToken/catalog/:type/:id/:extra.json", async (req, res) => {
   try {
-    const { anilistToken, type, id, extra } = req.params;
+    const { extra } = req.params;
 
     const searchQuery =
       extra && extra.startsWith("search=")
@@ -177,7 +177,7 @@ app.get("/:anilistToken/catalog/:type/:id/:extra.json", async (req, res) => {
 
 app.get("/catalog/:type/:id/:extra.json", async (req, res) => {
   try {
-    const { type, id, extra } = req.params;
+    const { extra } = req.params;
 
     const searchQuery =
       extra && extra.startsWith("search=")
@@ -194,8 +194,8 @@ app.get("/catalog/:type/:id/:extra.json", async (req, res) => {
 // Meta
 app.get("/:anilistToken/meta/:type/:id.json", async (req, res) => {
   try {
-    const { anilistToken, id } = req.params;
-    const meta = await getAnimeDetails(id, anilistToken);
+    const { id } = req.params;
+    const meta = await getAnimeDetails(id);
     res.json({ meta });
   } catch (err) {
     console.log("Meta error:", err);
@@ -221,24 +221,19 @@ app.get("/:anilistToken/stream/:type/:id.json", async (req, res) => {
 
     if (!id.startsWith("ani_")) return res.json({ streams: [] });
 
-    const [_, animeId, titleRaw, episodeRaw] = id.split("_");
-    const title = titleRaw?.replace(/[!?]/g, "");
-    const episodeNumber = episodeRaw || 1;
+    const [_, animeId, title, episode] = id.split("_");
 
     const streams = await getAnimeStreams(
       animeId,
       title,
-      episodeNumber,
+      episode,
       anilistToken
     );
 
     // Update user's watch status on Anilist
-    updateUserWatchStatusOnAnilist(
-      anilistToken,
-      animeId,
-      episodeNumber,
-      streams
-    );
+    if (anilistToken) {
+      updateUserWatchStatusOnAnilist(anilistToken, animeId, episode, streams);
+    }
 
     res.json({ streams });
   } catch (err) {
@@ -249,18 +244,16 @@ app.get("/:anilistToken/stream/:type/:id.json", async (req, res) => {
 
 app.get("/stream/:type/:id.json", async (req, res) => {
   try {
-    const { anilistToken, id } = req.params;
+    const { id } = req.params;
 
     if (!id.startsWith("ani_")) return res.json({ streams: [] });
 
-    const [_, animeId, titleRaw, episodeRaw] = id.split("_");
-    const title = titleRaw?.replace(/[!?]/g, "");
-    const episodeNumber = episodeRaw || 1;
+    const [_, animeId, title, episode] = id.split("_");
 
     const streams = await getAnimeStreams(
       animeId,
       title,
-      episodeNumber,
+      episode,
       anilistToken
     );
 
@@ -276,7 +269,7 @@ app.get(
   "/:anilistToken/subtitles/:type/:id/filename=:filename.json",
   async (req, res) => {
     try {
-      const { id, filename } = req.params;
+      const { id } = req.params;
 
       if (!id.startsWith("ani_")) return res.json({ subtitles: [] });
 
@@ -286,7 +279,7 @@ app.get(
       );
       const subtitles = await getSubtitles(allAnimeId.id, id.split("_")[3]);
 
-      if (!subtitles) return res.status(500).json({ subtitles: [] });
+      if (!subtitles) return res.json({ subtitles: [] });
 
       return res.json({
         subtitles: [
@@ -306,7 +299,7 @@ app.get(
 
 app.get("/subtitles/:type/:id/filename=:filename.json", async (req, res) => {
   try {
-    const { id, filename } = req.params;
+    const { id } = req.params;
 
     if (!id.startsWith("ani_")) return res.json({ subtitles: [] });
 
@@ -333,6 +326,7 @@ app.get("/subtitles/:type/:id/filename=:filename.json", async (req, res) => {
   }
 });
 
+// Poster with Badges
 app.get("/poster/:id.png", async (req, res) => {
   try {
     const original = req.query.url;
@@ -410,7 +404,6 @@ app.get("/poster/:id.png", async (req, res) => {
   }
 });
 
-// ------------------- START SERVER -------------------
 const PORT = process.env.PORT || 7000;
 const HOST = "127.0.0.1";
 app.listen(PORT, HOST, () => {

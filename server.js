@@ -18,14 +18,25 @@ const sharp = require("sharp");
 app.use(cors());
 app.use(express.static("public"));
 
-// Middleware to log requests
+const stats = {
+  requestTimestamps: [],
+  activeIPs: new Map(),
+};
+
+// Middleware to log requests and track stats
 app.use((req, res, next) => {
   const start = Date.now();
+  const clientIP = req.ip || req.connection.remoteAddress || "unknown";
+
+  stats.requestTimestamps.push(Date.now());
+
+  stats.activeIPs.set(clientIP, Date.now());
 
   res.on("finish", () => {
     const ms = Date.now() - start;
     console.log(
-      `${req.method} ${req.originalUrl.slice(0, 40)} - ${res.statusCode
+      `${req.method} ${req.originalUrl.slice(0, 40)} - ${
+        res.statusCode
       } (${ms}ms)`
     );
   });
@@ -33,9 +44,33 @@ app.use((req, res, next) => {
   next();
 });
 
+setInterval(() => {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000;
+  const sixtySecondsAgo = now - 60000;
+
+  stats.requestTimestamps = stats.requestTimestamps.filter(
+    (ts) => ts > oneMinuteAgo
+  );
+
+  // Keep only IPs seen in the last 60 seconds
+  for (const [ip, timestamp] of stats.activeIPs.entries()) {
+    if (timestamp < sixtySecondsAgo) {
+      stats.activeIPs.delete(ip);
+    }
+  }
+}, 10000);
+
 // Static Files or Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Stats API endpoint
+app.get("/api/stats", (req, res) => {
+  const rpm = stats.requestTimestamps.length;
+  const activeUsers = stats.activeIPs.size;
+  res.json({ rpm, activeUsers });
 });
 
 app.get("/logo.png", (req, res) => {

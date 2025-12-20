@@ -1,4 +1,4 @@
-# AnilistStream — an anime streaming addon
+# AnilistStream — A Stremio addon for HTTP Anime streaming 
 
 **AnilistStream** is a Stremio addon that provides **HTTP-based anime streaming** (not torrents) with AniList integration for metadata and watch progress synchronization.
 
@@ -73,13 +73,9 @@ Anime search is powered by AniList metadata, providing accurate titles, episodes
 No.  
 AnilistStream provides **direct HTTP streams only**.
 
----
-
 ### Are my credentials stored?
 No.  
 The addon does not store user credentials or personal data externally.
-
----
 
 ### Why is there a custom catalog?
 The custom catalog exists to improve AniList-specific behavior and matching.  
@@ -98,8 +94,6 @@ If you want to help:
 - Improve error handling or logging
 
 Feel free to open issues or submit pull requests.
-
----
 
 ## License
 

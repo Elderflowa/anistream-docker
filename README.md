@@ -5,65 +5,33 @@
   height="256"
 />
 
-# AnilistStream — A Stremio addon for HTTP Anime streaming 
+# AnilistStream-docker — A selfhosted Stremio addon for HTTP Anime streaming 
 
-**AnilistStream** is a Stremio addon that provides **HTTP-based anime streaming** (not torrents) with AniList integration for metadata and watch progress synchronization.
+**AnilistStream-docker** is a fork of AnistlistStream Stremio addon that provides **HTTP-based anime streaming** (not torrents) with AniList integration for metadata and watch progress synchronization.
 
-It is designed to work seamlessly inside Stremio while sourcing anime streams from multiple providers and keeping your AniList watch state up to date.
+It is forked with the intenstion to selfhost on own hardware instead of running on the provided server.
 
 ---
 
-## Installation & Usage
+## Building from source
 
-Install the addon in Stremio by visiting:
-
-**https://aniliststream.edmit.in**
-
-Open Stremio and start streaming anime.
-
+## Using pre-built image
+ghcr.io/elderflowa/anistream-docker:latest
 ---
 
 ## What This Addon Is
 
-- A **HTTP streaming addon provider** (no torrents involved)
-- Focused on **anime streaming**, not general media
-- Uses AniList for metadata, tracking, and organization
-- Designed to work natively inside Stremio with minimal setup
-
+See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
 ---
 
 ## Catalog Support
 
-- Supports **AnimeKitsu catalogs directly**  
-  (works alongside existing Kitsu-based setups in Stremio)
-
-- Includes a **custom AniList-based catalog**
-  - Used for improved AniList matching and personalization
-  - This catalog **may be removed or merged** in the future
-
+See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
 ---
 
 ## How It Works
 
-### Search
-
-Anime search is powered by AniList metadata, providing accurate titles, episodes, and season information.
-
-### Watch Lists
-
-- Shows anime you are currently watching
-- Shows anime you are planning to watch
-- Automatically updates AniList status when you start or finish watching
-- Saves episode progress automatically
-
-### Streaming
-
-- Streams anime episodes over **direct HTTP sources**
-- Multiple providers per episode when available
-- Automatic episode availability detection
-- Subtitle support (including HLS-based subtitles)
-- Dubbed anime support where available
-
+See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
 ---
 
 ## Technical Details
@@ -76,38 +44,6 @@ Anime search is powered by AniList metadata, providing accurate titles, episodes
 - No user credentials stored on external servers
 
 ---
-
-## FAQ
-
-### Is this a torrent addon?
-
-No.  
-AnilistStream provides **direct HTTP streams only**.
-
-### Are my credentials stored?
-
-No.  
-The addon does not store user credentials or personal data externally.
-
-### Why is there a custom catalog?
-
-The custom catalog exists to improve AniList-specific behavior and matching.  
-Based on user feedback, it may be removed in the future, with everything relying entirely on **AnimeKitsu** catalogs instead.
-
----
-
-## Contributors
-
-Contributions are welcome.
-
-If you want to help:
-
-- Improve stream discovery
-- Improve AniList ↔ catalog matching
-- Add tests or CI/CD
-- Improve error handling or logging
-
-Feel free to open issues or submit pull requests.
 
 ## License
 

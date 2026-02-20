@@ -24,7 +24,7 @@ app.use(subtitles);
 app.use(catalog);
 
 const PORT = process.env.PORT || 7000;
-const HOST = "127.0.0.1";
+const HOST = process.env.HOST || "127.0.0.1";
 app.listen(PORT, HOST, () => {
     console.log(`AnilistStream running at http://${HOST}:${PORT}`);
     console.log(`Visit http://${HOST}:${PORT}/configure to set up your token.`);

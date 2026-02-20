@@ -14,6 +14,7 @@ It is forked with the intenstion to selfhost on own hardware instead of running 
 ---
 
 ## Building from source
+WIP
 
 ## Using pre-built image
 ghcr.io/elderflowa/anistream-docker:latest

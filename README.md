@@ -1,40 +1,53 @@
-<img
-  src="https://github.com/Saadiq8149/AnilistStream/blob/1cba2e46de9e627f1607d6782e2790193cdad501/public/logo.png"
-  alt="AnilistStream Logo"
-  width="256"
-  height="256"
-/>
+<p align="center">
+  <img
+    src="https://github.com/Saadiq8149/AnilistStream/blob/1cba2e46de9e627f1607d6782e2790193cdad501/public/logo.png"
+    alt="AnilistStream Logo"
+    width="256"
+    height="256"
+  />
+</p>
 
-# AnilistStream-docker — A selfhosted Stremio addon for HTTP Anime streaming 
+# AnilistStream-docker  
+### A self-hosted Stremio addon for HTTP anime streaming
 
-**AnilistStream-docker** is a fork of AnistlistStream Stremio addon that provides **HTTP-based anime streaming** (not torrents) with AniList integration for metadata and watch progress synchronization.
+**AnilistStream-docker** is a fork of the AnilistStream Stremio addon that provides **HTTP-based anime streaming** (not torrents), with AniList integration for metadata and watch progress synchronization.
 
-It is forked with the intenstion to selfhost on own hardware instead of running on the provided server.
+This fork exists to enable **self-hosting on your own hardware**, rather than relying on the public hosted server.
 
 ---
 
-## Building from source
+## 📦 Using the Pre-built Image
+
+---
+
+## 🛠 Building from Source
+
 WIP
 
-## Using pre-built image
-ghcr.io/elderflowa/anistream-docker:latest
 ---
 
-## What This Addon Is
-See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
+## 📚 What This Addon Is
+
+See the original repository:  
+https://github.com/Saadiq8149/AnilistStream
+
 ---
 
-## Catalog Support
+## 📺 Catalog Support
 
-See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
+See the original repository:  
+https://github.com/Saadiq8149/AnilistStream
+
 ---
 
-## How It Works
+## ⚙ How It Works
 
-See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
+See the original repository:  
+https://github.com/Saadiq8149/AnilistStream
+
 ---
 
-## Technical Details
+## 🧩 Technical Details
 
 - Built with **Node.js** and **Express**
 - Uses the **AniList GraphQL API**
@@ -45,13 +58,13 @@ See original repository [https://](https://github.com/Saadiq8149/AnilistStream)
 
 ---
 
-## License
+## 📄 License
 
 This project is provided **as-is** for personal use.
 
 ---
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 This addon uses a slightly modified version of **ani-cli**  
 to discover and retrieve anime streaming sources.

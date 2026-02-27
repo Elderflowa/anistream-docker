@@ -4,11 +4,11 @@ services:
     container_name: testanime
     ports:
       - "6969:7000"   # host:container
-    environment:
-      - PORT=7000
-      - HOST=0.0.0.0
-      - ANILIST_AUTH_URL=https://anilist.co/api/v2/oauth/authorize?client_id=>>ID<<&response_type=token
-      - BASE_URL=SUB.DOMAIN.COM
-#    env_file:
-#      - .env          # optional (only if you use one)
+#    environment:
+#      - PORT=7000
+#      - HOST=0.0.0.0
+#      - ANILIST_AUTH_URL=https://anilist.co/api/v2/oauth/authorize?client_id=>>ID<<&response_type=token
+#      - BASE_URL=sub.domain.com
+    env_file:
+      - .env # optional but recommended
     restart: unless-stopped

@@ -43,6 +43,15 @@ Use the `example-compose.yaml` file:
 ```
 curl -o compose.yaml https://raw.githubusercontent.com/Elderflowa/AnilistStream-docker/main/example-compose.yaml
 ```
+Make a `.env` file (Optional):
+
+| Variable           | Default Value                                                                 | Description                                      |
+|--------------------|------------------------------------------------------------------------------|--------------------------------------------------|
+| `PORT`             | `7000`                                                                       | Port the application server listens on.         |
+| `HOST`             | `0.0.0.0`                                                                    | Host address the server binds to.               |
+| `ANILIST_AUTH_URL` | `https://anilist.co/api/v2/oauth/authorize?client_id=>>ID<<&response_type=token` | OAuth authorization endpoint for AniList API.   |
+| `BASE_URL`         | `sub.domain.com`                                                             | Base domain used for application routing/links. |
+
 Then run it with `docker compose up -d`
 
 ---
